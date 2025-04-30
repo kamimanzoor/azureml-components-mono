@@ -9,6 +9,12 @@ on:
       enabled:
         required: true
         type: boolean
+      component:
+        required: true
+        type: string
+      yaml_filename:
+        required: true
+        type: string
 
 jobs:
   # Only run this job if enabled is true
@@ -29,3 +35,74 @@ jobs:
           ls -la
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Azure Login with Federated Credentials
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Unzip component artifact
+        run: |
+          ls -la
+          TAG_NAME="${{ inputs.tag_name }}"
+          # Extract repository name from full repository name (owner/repo)
+          REPO_NAME=${GITHUB_REPOSITORY#*/}
+          echo "Repository name: $REPO_NAME"
+
+          # Now we know what file to expect
+          ARTIFACT_NAME=${REPO_NAME}-${TAG_NAME}
+          ZIP_FILE="$ARTIFACT_NAME.zip"
+          echo "Looking for zip file: $ZIP_FILE"
+          unzip $ZIP_FILE
+          ls -la $ARTIFACT_NAME
+          # Store the artifact name as a GitHub Actions environment variable
+          echo "artifact_name=$ARTIFACT_NAME" >> $GITHUB_ENV
+
+      - name: Install Azure ML CLI
+        run: |
+          az extension add -n ml -y
+
+      - uses: cschleiden/replace-tokens@v1
+        with:
+          tokenPrefix: '@@'
+          tokenSuffix: '@@'
+          files: '["${{ env.artifact_name }}/components/${{ inputs.component }}/*.md.tmpl"]'
+        env:
+          version: ${{ inputs.tag_name }}
+          version_link: https://github.com/${{ github.repository }}/releases/tag/${{ inputs.tag_name }}
+
+      - name: Publish component to Azure ML Registry
+        run: |
+          # Read GitHub Actions variable into bash variable
+          cd ${{ env.artifact_name }}
+          ls -la
+          description=$(cat components/${{ inputs.component }}/description.md.tmpl)
+          # Display description for debugging
+          echo "Description content:"
+          echo "$description"
+          
+          version="${{ inputs.tag_name }}"
+          yaml_filename="${{ inputs.yaml_filename }}"
+          echo "Using component file: $yaml_filename"
+          # Use the variable for the Azure ML commands
+          
+          # Extract component name from YAML file
+          component_name=$(yq -r '.name' $yaml_filename)
+          echo "Component name: $component_name"
+
+          # Add version to the YAML file
+          yq -i ".version = \"${version}\"" $yaml_filename
+          
+          version_link="https://github.com/${{ github.repository }}/releases/tag/${{ inputs.tag_name }}"
+
+          yq -i ".tags.changelog = \"${version_link}\"" $yaml_filename
+          
+          # Display the modified YAML for verification
+          echo "Modified YAML file:"
+          cat $yaml_filename
+
+          az ml component create --name "$component_name" --file "$yaml_filename" --version "$version" \
+          --registry-name ${{ vars.AZURE_ML_REGISTRY_NAME }} \
+          --set description="$description"
