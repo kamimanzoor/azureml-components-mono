@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://github.com/kamimanzoor/azureml-components-mono/compare/my_train-v0.8.0...my_train-v0.9.0) (2025-04-30)
+
+
+### Features
+
+* update feature comment from 9 to 10 in eval and train scripts ([385766b](https://github.com/kamimanzoor/azureml-components-mono/commit/385766ba4a59b18869288cebcb2f7fdc4d4a39e9))
+
 ## [0.8.0](https://github.com/kamimanzoor/azureml-components-mono/compare/my_train-v0.7.0...my_train-v0.8.0) (2025-04-30)
 
 
