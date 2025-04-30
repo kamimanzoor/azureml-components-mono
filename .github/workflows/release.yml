@@ -54,7 +54,7 @@ jobs:
                 #     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
                 
       - name: Download release source zip
-        if: contains(fromJson(needs.release-please.outputs.paths_released), matrix.package)
+        if: contains(needs.release-please.outputs.paths_released, matrix.package)
         run: |
           paths_released="${{ needs.release-please.outputs.paths_released }}"
           echo "release tag name: ${{ matrix.tag_name }}"
