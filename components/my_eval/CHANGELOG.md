@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/kamimanzoor/azureml-components-mono/compare/my_eval-v0.6.0...my_eval-v0.7.0) (2025-04-30)
+
+
+### Features
+
+* update feature comment from Feature 3 to Feature 4 in eval.py ([6dec325](https://github.com/kamimanzoor/azureml-components-mono/commit/6dec32502466b14f982ced29fae43056512c659b))
+
 ## [0.6.0](https://github.com/kamimanzoor/azureml-components-mono/compare/my_eval-v0.5.0...my_eval-v0.6.0) (2025-04-30)
 
 
