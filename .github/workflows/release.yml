@@ -46,8 +46,8 @@ jobs:
             release_created: ${{ needs.release-please.outputs.my_train_release_created }}
     uses: ./.github/workflows/publish-component.yml
     with:
-      enabled: true
-      tag_name: abcd
+      enabled: ${{ fromJSON(matrix.release_created) }}
+      tag_name: ${{ matrix.tag_name }}
     secrets: inherit
     permissions:
       id-token: write
