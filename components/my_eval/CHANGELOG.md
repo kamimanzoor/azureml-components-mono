@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/kamimanzoor/azureml-components-mono/compare/v0.1.0...v0.2.0) (2025-04-30)
+
+
+### Features
+
+* add dummy comment to eval.py ([d2e2774](https://github.com/kamimanzoor/azureml-components-mono/commit/d2e277467b48731a64c72e628c7c18a27f33d2bb))
+
 ## 0.1.0 (2025-04-30)
 
 
