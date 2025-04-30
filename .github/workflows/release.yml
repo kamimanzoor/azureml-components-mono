@@ -18,8 +18,8 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     outputs:
-      release_created: ${{ steps.release.outputs.release_created }}
-      tag_name: ${{ steps.release.outputs.tag_name }}
+      releases_created: ${{ steps.release.outputs.releases_created }}
+      paths_released: ${{ steps.release.outputs.paths_released }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -30,7 +30,7 @@ jobs:
   publish-to-registry:
     needs: release-please
     runs-on: ubuntu-latest
-    if: needs.release-please.outputs.release_created == 'true'
+    if: needs.release-please.outputs.releases_created == 'true'
     steps:
 
       # - name: Azure Login with Federated Credentials
@@ -42,8 +42,8 @@ jobs:
 
       - name: Download release source zip
         run: |
-          TAG_NAME="${{ needs.release-please.outputs.tag_name }}"
-          echo "release tag name: ${{ needs.release-please.outputs.tag_name }}"
+          paths_released="${{ needs.release-please.outputs.paths_released }}"
+          echo "release tag name: ${{ needs.release-please.outputs.paths_released }}"
           gh release download $TAG_NAME \
             --archive=zip \
             --repo ${{ github.repository }}
@@ -51,66 +51,66 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  #     - name: Unzip component artifact
-  #       run: |
-  #         ls -la
-  #         TAG_NAME="${{ needs.release-please.outputs.tag_name }}"
-  #         # Extract repository name from full repository name (owner/repo)
-  #         REPO_NAME=${GITHUB_REPOSITORY#*/}
-  #         echo "Repository name: $REPO_NAME"
+      # - name: Unzip component artifact
+      #   run: |
+      #     ls -la
+      #     TAG_NAME="${{ needs.release-please.outputs.tag_name }}"
+      #     # Extract repository name from full repository name (owner/repo)
+      #     REPO_NAME=${GITHUB_REPOSITORY#*/}
+      #     echo "Repository name: $REPO_NAME"
 
-  #         # Now we know what file to expect
-  #         ARTIFACT_NAME=${REPO_NAME}-${TAG_NAME#v}
-  #         ZIP_FILE="$ARTIFACT_NAME.zip"
-  #         echo "Looking for zip file: $ZIP_FILE"
-  #         unzip $ZIP_FILE
-  #         ls -la $ARTIFACT_NAME
-  #         # Store the artifact name as a GitHub Actions environment variable
-  #         echo "artifact_name=$ARTIFACT_NAME" >> $GITHUB_ENV
+      #     # Now we know what file to expect
+      #     ARTIFACT_NAME=${REPO_NAME}-${TAG_NAME#v}
+      #     ZIP_FILE="$ARTIFACT_NAME.zip"
+      #     echo "Looking for zip file: $ZIP_FILE"
+      #     unzip $ZIP_FILE
+      #     ls -la $ARTIFACT_NAME
+      #     # Store the artifact name as a GitHub Actions environment variable
+      #     echo "artifact_name=$ARTIFACT_NAME" >> $GITHUB_ENV
 
-  #     - name: Install Azure ML CLI
-  #       run: |
-  #         az extension add -n ml -y
+      # - name: Install Azure ML CLI
+      #   run: |
+      #     az extension add -n ml -y
 
-  #     - uses: cschleiden/replace-tokens@v1
-  #       with:
-  #         tokenPrefix: '@@'
-  #         tokenSuffix: '@@'
-  #         files: '["${{ env.artifact_name }}/.github/workflows/*.md.tmpl"]'
-  #       env:
-  #         version: ${{ needs.release-please.outputs.tag_name }}
-  #         version_link: https://github.com/${{ github.repository }}/releases/tag/${{ needs.release-please.outputs.tag_name }}
+      # - uses: cschleiden/replace-tokens@v1
+      #   with:
+      #     tokenPrefix: '@@'
+      #     tokenSuffix: '@@'
+      #     files: '["${{ env.artifact_name }}/.github/workflows/*.md.tmpl"]'
+      #   env:
+      #     version: ${{ needs.release-please.outputs.tag_name }}
+      #     version_link: https://github.com/${{ github.repository }}/releases/tag/${{ needs.release-please.outputs.tag_name }}
 
-  #     - name: Publish component to Azure ML Registry
-  #       run: |
-  #         # Read GitHub Actions variable into bash variable
-  #         cd ${{ env.artifact_name }}
-  #         ls -la
-  #         description=$(cat .github/workflows/description.md.tmpl)
-  #         # Display description for debugging
-  #         echo "Description content:"
-  #         echo "$description"
+      # - name: Publish component to Azure ML Registry
+      #   run: |
+      #     # Read GitHub Actions variable into bash variable
+      #     cd ${{ env.artifact_name }}
+      #     ls -la
+      #     description=$(cat .github/workflows/description.md.tmpl)
+      #     # Display description for debugging
+      #     echo "Description content:"
+      #     echo "$description"
           
-  #         version="${{ needs.release-please.outputs.tag_name }}"
-  #         yaml_filename="${{ vars.YAML_FILENAME }}"
-  #         echo "Using component file: $yaml_filename"
-  #         # Use the variable for the Azure ML commands
+      #     version="${{ needs.release-please.outputs.tag_name }}"
+      #     yaml_filename="${{ vars.YAML_FILENAME }}"
+      #     echo "Using component file: $yaml_filename"
+      #     # Use the variable for the Azure ML commands
           
-  #         # Extract component name from YAML file
-  #         component_name=$(yq -r '.name' $yaml_filename)
-  #         echo "Component name: $component_name"
+      #     # Extract component name from YAML file
+      #     component_name=$(yq -r '.name' $yaml_filename)
+      #     echo "Component name: $component_name"
 
-  #         # Add version to the YAML file
-  #         yq -i ".version = \"${version}\"" $yaml_filename
+      #     # Add version to the YAML file
+      #     yq -i ".version = \"${version}\"" $yaml_filename
           
-  #         version_link="https://github.com/${{ github.repository }}/releases/tag/${{ needs.release-please.outputs.tag_name }}"
+      #     version_link="https://github.com/${{ github.repository }}/releases/tag/${{ needs.release-please.outputs.tag_name }}"
 
-  #         yq -i ".tags.changelog = \"${version_link}\"" $yaml_filename
+      #     yq -i ".tags.changelog = \"${version_link}\"" $yaml_filename
           
-  #         # Display the modified YAML for verification
-  #         echo "Modified YAML file:"
-  #         cat $yaml_filename
+      #     # Display the modified YAML for verification
+      #     echo "Modified YAML file:"
+      #     cat $yaml_filename
 
-  #         az ml component create --name "$component_name" --file "$yaml_filename" --version "$version" \
-  #         --registry-name ${{ vars.AZURE_ML_REGISTRY_NAME }} \
-  #         --set description="$description"
+      #     az ml component create --name "$component_name" --file "$yaml_filename" --version "$version" \
+      #     --registry-name ${{ vars.AZURE_ML_REGISTRY_NAME }} \
+      #     --set description="$description"
