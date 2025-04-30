@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.0](https://github.com/kamimanzoor/azureml-components-mono/compare/my_eval-v0.10.0...my_eval-v0.11.0) (2025-04-30)
+
+
+### Features
+
+* update feature comments in eval and train scripts ([f47d5d1](https://github.com/kamimanzoor/azureml-components-mono/commit/f47d5d1c8c08a23adc3e7ecc0f6047e7d5986713))
+
 ## [0.10.0](https://github.com/kamimanzoor/azureml-components-mono/compare/my_eval-v0.9.0...my_eval-v0.10.0) (2025-04-30)
 
 
