@@ -34,8 +34,8 @@ jobs:
         id: release
 
   publish-to-registry:
-    # needs: release-please
-    # runs-on: ubuntu-latest
+    needs: release-please
+    runs-on: ubuntu-latest
     # strategy:
     #   matrix:
     #     include:
