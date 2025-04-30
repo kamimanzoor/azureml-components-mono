@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/kamimanzoor/azureml-components-mono/compare/my_eval-v0.3.0...my_eval-v0.4.0) (2025-04-30)
+
+
+### Features
+
+* add my_train component with evaluation script and update repo links ([b2d37e1](https://github.com/kamimanzoor/azureml-components-mono/commit/b2d37e12fb900f5928700a3e2dfa6b10902f56a3))
+
 ## [0.3.0](https://github.com/kamimanzoor/azureml-components-mono/compare/my_eval-v0.2.0...my_eval-v0.3.0) (2025-04-30)
 
 
