@@ -1,0 +1,31 @@
+name: Publish Component
+
+on:
+  workflow_call:
+    inputs:
+      tag_name:
+        required: true
+        type: string
+      enabled:
+        required: true
+        type: boolean
+
+jobs:
+  # Only run this job if enabled is true
+  publish:
+    runs-on: ubuntu-latest
+    if: ${{ inputs.enabled }}
+    
+    steps:
+      - name: Publish component
+        run: echo "Publishing component with tag ${{ inputs.tag_name }}"
+        # Add actual publishing steps here
+      - name: Download release source zip
+        run: |
+          echo "release tag name: ${{ inputs.tag_name }}"
+          gh release download ${{ inputs.tag_name }} \
+            --archive=zip \
+            --repo ${{ github.repository }}
+          ls -la
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -41,10 +41,22 @@ jobs:
         include:
           - package: my_eval
             tag_name: ${{ needs.release-please.outputs.my_eval_tag_name }}
+            release_created: ${{ needs.release-please.outputs.my_eval_release_created }}
           - package: my_train
             tag_name: ${{ needs.release-please.outputs.my_train_tag_name }}
-
-    steps:
+            release_created: ${{ needs.release-please.outputs.my_train_release_created }}
+    uses: ./.github/workflows/publish-component.yml
+    with:
+      enabled: ${{ fromJSON(matrix.release_created) }}
+      tag_name: ${{ matrix.tag_name }}
+    secrets: inherit
+    permissions:
+      id-token: write
+      contents: write
+      issues: write
+      pull-requests: write
+          
+    # steps:
               
               # - name: Azure Login with Federated Credentials
               #   uses: azure/login@v2
@@ -53,17 +65,7 @@ jobs:
                 #     tenant-id: ${{ secrets.AZURE_TENANT_ID }}
                 #     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
                 
-      - name: Download release source zip
-        if: contains(needs.release-please.outputs.paths_released, matrix.package)
-        run: |
-          paths_released="${{ needs.release-please.outputs.paths_released }}"
-          echo "release tag name: ${{ matrix.tag_name }}"
-          gh release download $TAG_NAME \
-            --archive=zip \
-            --repo ${{ github.repository }}
-          ls -la
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Download release source zip
 
       # - name: Unzip component artifact
       #   run: |
