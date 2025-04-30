@@ -20,6 +20,12 @@ jobs:
     outputs:
       releases_created: ${{ steps.release.outputs.releases_created }}
       paths_released: ${{ steps.release.outputs.paths_released }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+      my_eval_release_created: ${{ steps.release.outputs['packages/my_eval--release_created'] }}
+      my_eval_tag_name: ${{ steps.release.outputs['packages/my_eval--tag_name'] }}
+      my_train_release_created: ${{ steps.release.outputs['packages/my_train--release_created'] }}
+      my_train_tag_name: ${{ steps.release.outputs['packages/my_train--tag_name'] }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -30,20 +36,28 @@ jobs:
   publish-to-registry:
     needs: release-please
     runs-on: ubuntu-latest
-    if: needs.release-please.outputs.releases_created == 'true'
+    strategy:
+      matrix:
+        include:
+          - package: my_eval
+            tag_name: ${{ needs.release-please.outputs.my_eval_tag_name }}
+          - package: my_train
+            tag_name: ${{ needs.release-please.outputs.my_train_tag_name }}
+
     steps:
-
-      # - name: Azure Login with Federated Credentials
-      #   uses: azure/login@v2
-      #   with:
-      #     client-id: ${{ secrets.AZURE_CLIENT_ID }}
-      #     tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-      #     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
+              
+              # - name: Azure Login with Federated Credentials
+              #   uses: azure/login@v2
+              #   with:
+                #     client-id: ${{ secrets.AZURE_CLIENT_ID }}
+                #     tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+                #     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+                
       - name: Download release source zip
+        if: contains(fromJson(needs.release-please.outputs.paths_released), matrix.package)
         run: |
           paths_released="${{ needs.release-please.outputs.paths_released }}"
-          echo "release tag name: ${{ needs.release-please.outputs.paths_released }}"
+          echo "release tag name: ${{ matrix.tag_name }}"
           gh release download $TAG_NAME \
             --archive=zip \
             --repo ${{ github.repository }}
