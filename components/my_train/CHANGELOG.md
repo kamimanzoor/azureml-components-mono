@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.0](https://github.com/kamimanzoor/azureml-components-mono/compare/my_train-v0.9.0...my_train-v0.10.0) (2025-04-30)
+
+
+### Features
+
+* merge test-branch into main ([#16](https://github.com/kamimanzoor/azureml-components-mono/issues/16)) ([978e08f](https://github.com/kamimanzoor/azureml-components-mono/commit/978e08f630d503c0997877d143110692402a4b30))
+
 ## [0.9.0](https://github.com/kamimanzoor/azureml-components-mono/compare/my_train-v0.8.0...my_train-v0.9.0) (2025-04-30)
 
 
