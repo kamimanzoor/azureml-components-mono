@@ -26,6 +26,7 @@ for line in lines:
 # Feature 2
 # Bugfix 1
 # Feature 10
+# PR test
 curtime = datetime.now().strftime("%b-%d-%Y %H:%M:%S")
 eval_msg = f"Eval done at {curtime}\n"
 (Path(args.eval_output) / "eval_result.txt").write_text(eval_msg)
