@@ -21,10 +21,10 @@ jobs:
       releases_created: ${{ steps.release.outputs.releases_created }}
       paths_released: ${{ steps.release.outputs.paths_released }}
       tag_name: ${{ steps.release.outputs.tag_name }}
-      my_eval_release_created: ${{ steps.release.outputs['packages/my_eval--release_created'] }}
-      my_eval_tag_name: ${{ steps.release.outputs['packages/my_eval--tag_name'] }}
-      my_train_release_created: ${{ steps.release.outputs['packages/my_train--release_created'] }}
-      my_train_tag_name: ${{ steps.release.outputs['packages/my_train--tag_name'] }}
+      my_eval_release_created: ${{ steps.release.outputs['components/my_eval--release_created'] }}
+      my_eval_tag_name: ${{ steps.release.outputs['components/my_eval--tag_name'] }}
+      my_train_release_created: ${{ steps.release.outputs['components/my_train--release_created'] }}
+      my_train_tag_name: ${{ steps.release.outputs['components/my_train--tag_name'] }}
 
     steps:
       - name: Checkout repository
@@ -38,10 +38,10 @@ jobs:
           echo "releases_created: ${{ steps.release.outputs.releases_created }}"
           echo "paths_released: ${{ steps.release.outputs.paths_released }}"
           echo "tag_name: ${{ steps.release.outputs.tag_name }}"
-          echo "my_eval_release_created: ${{ steps.release.outputs['packages/my_eval--release_created'] }}"
-          echo "my_eval_tag_name: ${{ steps.release.outputs['packages/my_eval--tag_name'] }}"
-          echo "my_train_release_created: ${{ steps.release.outputs['packages/my_train--release_created'] }}"
-          echo "my_train_tag_name: ${{ steps.release.outputs['packages/my_train--tag_name'] }}"
+          echo "my_eval_release_created: ${{ steps.release.outputs['components/my_eval--release_created'] }}"
+          echo "my_eval_tag_name: ${{ steps.release.outputs['components/my_eval--tag_name'] }}"
+          echo "my_train_release_created: ${{ steps.release.outputs['components/my_train--release_created'] }}"
+          echo "my_train_tag_name: ${{ steps.release.outputs['components/my_train--tag_name'] }}"
 
   debug:
     needs: release-please
@@ -65,6 +65,7 @@ jobs:
 
   publish-to-registry:
     needs: release-please
+    if: needs.release-please.outputs.releases_created == 'true'
     strategy:
       matrix:
         include:
