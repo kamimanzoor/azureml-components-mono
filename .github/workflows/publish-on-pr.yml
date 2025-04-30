@@ -27,11 +27,32 @@ jobs:
   publish-to-workspace:
     needs: run-tests
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - component: my_eval
+            yaml_filename: eval.yml
+          - component: my_train
+            yaml_filename: train.yml
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v35
+
+      - name: Check if component folder is changed
+        id: check-component
+        run: |
+          if echo "${{ steps.changed-files.outputs.all_changed_files }}" | grep -q "components/${{ matrix.component }}/"; then
+            echo "publish=true" >> $GITHUB_ENV
+          else
+            echo "publish=false" >> $GITHUB_ENV
+
       - name: Azure Login with Federated Credentials
+        if: env.publish == 'true'
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
@@ -39,29 +60,33 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Install Azure ML CLI
+        if: env.publish == 'true'
         run: |
           az extension add -n ml -y
 
       - uses: cschleiden/replace-tokens@v1
+        if: env.publish == 'true'
         with:
           tokenPrefix: '@@'
           tokenSuffix: '@@'
-          files: '[".github/workflows/*.md.tmpl"]'
+          files: '["components/${{ matrix.component }}/*.md.tmpl"]'
         env:
           version: ${{ github.event.pull_request.head.sha }}
           version_link: ${{ github.event.pull_request.html_url }}
 
       - name: Publish component to Azure ML Registry
+        if: env.publish == 'true'
         run: |
           # Read GitHub Actions variable into bash variable
           ls -la
-          description=$(cat .github/workflows/description.md.tmpl)
+          cd components/${{ matrix.component }}
+          description=$(cat description.md.tmpl)
           # Display description for debugging
           echo "Description content:"
           echo "$description"
           
           version="${{ github.event.pull_request.head.sha }}"
-          yaml_filename="${{ vars.YAML_FILENAME }}"
+          yaml_filename="${{ matrix.yaml_filename }}"
           echo "Using component file: $yaml_filename"
           # Use the variable for the Azure ML commands
           
