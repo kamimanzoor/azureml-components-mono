@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/kamimanzoor/azureml-components-mono/compare/my_eval-v0.4.0...my_eval-v0.5.0) (2025-04-30)
+
+
+### Features
+
+* add description files for my_eval and my_train components ([8fc2d41](https://github.com/kamimanzoor/azureml-components-mono/commit/8fc2d41960b995b8cd2e89883254b01b7f82700b))
+
 ## [0.4.0](https://github.com/kamimanzoor/azureml-components-mono/compare/my_eval-v0.3.0...my_eval-v0.4.0) (2025-04-30)
 
 
