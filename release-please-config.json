@@ -1,0 +1,7 @@
+{
+  "initial-version": "0.1.0",
+  "packages": {
+    "components/my_eval": {}
+  },
+  "release-type": "simple"
+}
