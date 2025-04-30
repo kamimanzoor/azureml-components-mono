@@ -63,6 +63,12 @@ jobs:
       - name: Install Azure ML CLI
         run: |
           az extension add -n ml -y
+          
+      - name: Extract raw version
+        run: |
+          raw_version="${{ inputs.tag_name#*- }}"
+          echo "Raw version: $raw_version"
+          echo "raw_version=$raw_version" >> $GITHUB_ENV
 
       - uses: cschleiden/replace-tokens@v1
         with:
@@ -70,7 +76,7 @@ jobs:
           tokenSuffix: '@@'
           files: '["${{ env.artifact_name }}/components/${{ inputs.component }}/*.md.tmpl"]'
         env:
-          version: ${{ inputs.tag_name }}
+          version: ${{ env.raw_version }}
           version_link: https://github.com/${{ github.repository }}/releases/tag/${{ inputs.tag_name }}
 
       - name: Publish component to Azure ML Registry
@@ -83,7 +89,7 @@ jobs:
           echo "Description content:"
           echo "$description"
           
-          version="${{ inputs.tag_name }}"
+          version="${{ env.raw_version }}"
           yaml_filename="${{ inputs.yaml_filename }}"
           echo "Using component file: $yaml_filename"
           # Use the variable for the Azure ML commands
