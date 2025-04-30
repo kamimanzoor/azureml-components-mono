@@ -27,26 +27,29 @@ jobs:
       - uses: googleapis/release-please-action@v4
         id: release
 
-  # publish-to-registry:
-  #   needs: release-please
-  #   runs-on: ubuntu-latest
-  #   if: needs.release-please.outputs.release_created == 'true'
-  #   steps:
-  #     - name: Azure Login with Federated Credentials
-  #       uses: azure/login@v2
-  #       with:
-  #         client-id: ${{ secrets.AZURE_CLIENT_ID }}
-  #         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-  #         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  publish-to-registry:
+    needs: release-please
+    runs-on: ubuntu-latest
+    if: needs.release-please.outputs.release_created == 'true'
+    steps:
 
-  #     - name: Download release source zip
-  #       run: |
-  #         TAG_NAME="${{ needs.release-please.outputs.tag_name }}"
-  #         gh release download $TAG_NAME \
-  #           --archive=zip \
-  #           --repo ${{ github.repository }}
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Azure Login with Federated Credentials
+      #   uses: azure/login@v2
+      #   with:
+      #     client-id: ${{ secrets.AZURE_CLIENT_ID }}
+      #     tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+      #     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Download release source zip
+        run: |
+          TAG_NAME="${{ needs.release-please.outputs.tag_name }}"
+          echo "release tag name: ${{ needs.release-please.outputs.tag_name }}"
+          gh release download $TAG_NAME \
+            --archive=zip \
+            --repo ${{ github.repository }}
+          ls -la
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   #     - name: Unzip component artifact
   #       run: |
