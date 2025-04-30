@@ -50,6 +50,7 @@ jobs:
             echo "publish=true" >> $GITHUB_ENV
           else
             echo "publish=false" >> $GITHUB_ENV
+          fi
 
       - name: Azure Login with Federated Credentials
         if: env.publish == 'true'
