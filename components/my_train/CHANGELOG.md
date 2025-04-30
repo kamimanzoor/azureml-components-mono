@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/kamimanzoor/azureml-components-mono/compare/my_train-v0.3.0...my_train-v0.4.0) (2025-04-30)
+
+
+### Features
+
+* add feature 3 comment in train.py ([06b931c](https://github.com/kamimanzoor/azureml-components-mono/commit/06b931ccd9a069a73cad7a6c77a0ba42d9183ef3))
+
 ## [0.3.0](https://github.com/kamimanzoor/azureml-components-mono/compare/my_train-v0.2.0...my_train-v0.3.0) (2025-04-30)
 
 
