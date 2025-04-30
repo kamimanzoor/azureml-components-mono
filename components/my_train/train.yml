@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
-name: my_eval
-display_name: Eval
+name: my_train
+display_name: Train
 type: command
 inputs:
   scoring_result:
@@ -9,11 +9,11 @@ outputs:
   eval_output:
     type: uri_folder
 environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
-code: ./eval_src
+code: ./train_src
 command: >-
-  python eval.py  --scoring_result ${{inputs.scoring_result}}  --eval_output ${{outputs.eval_output}}
+  python train.py  --scoring_result ${{inputs.scoring_result}}  --eval_output ${{outputs.eval_output}}
 tags:
   contact: ml-team@example.com
   owner: ml-team
   type: evaluation
-  repo: https://github.com/kamimanzoor/azureml-components-mono/components/my_eval
+  repo: https://github.com/kamimanzoor/azureml-components-mono/components/my_train

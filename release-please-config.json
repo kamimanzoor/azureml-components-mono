@@ -3,6 +3,9 @@
   "packages": {
     "components/my_eval": {
       "component": "my_eval"
+    },
+    "components/my_train": {
+      "component": "my_train"
     }
   },
   "release-type": "simple",
