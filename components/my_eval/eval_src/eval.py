@@ -10,6 +10,8 @@ args = parser.parse_args()
 
 print("hello evaluation world...")
 
+# This is a dummy comment added for demonstration purposes.
+
 lines = [
     f"Scoring result path: {args.scoring_result}",
     f"Evaluation output path: {args.eval_output}",
