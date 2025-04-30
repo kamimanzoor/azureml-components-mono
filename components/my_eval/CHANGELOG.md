@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/kamimanzoor/azureml-components-mono/compare/my_eval-v0.5.0...my_eval-v0.6.0) (2025-04-30)
+
+
+### Features
+
+* add Feature 3 to evaluation comments for clarity ([69e579f](https://github.com/kamimanzoor/azureml-components-mono/commit/69e579f383df929a3a5fda601c75ee92b59d8f7a))
+
 ## [0.5.0](https://github.com/kamimanzoor/azureml-components-mono/compare/my_eval-v0.4.0...my_eval-v0.5.0) (2025-04-30)
 
 
