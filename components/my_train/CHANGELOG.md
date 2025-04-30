@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/kamimanzoor/azureml-components-mono/compare/my_train-v0.5.0...my_train-v0.6.0) (2025-04-30)
+
+
+### Features
+
+* update component names and display names for eval and train components ([00f5ee1](https://github.com/kamimanzoor/azureml-components-mono/commit/00f5ee1be98d39fa7f25c39ae2725dac7408efd2))
+
 ## [0.5.0](https://github.com/kamimanzoor/azureml-components-mono/compare/my_train-v0.4.0...my_train-v0.5.0) (2025-04-30)
 
 
