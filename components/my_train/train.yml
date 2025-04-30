@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
-name: my_train
-display_name: Train
+name: my_train_mono
+display_name: Train_Mono
 type: command
 inputs:
   scoring_result:

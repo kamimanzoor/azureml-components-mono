@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
-name: my_eval
-display_name: Eval
+name: my_eval_mono
+display_name: Eval_Mono
 type: command
 inputs:
   scoring_result:
