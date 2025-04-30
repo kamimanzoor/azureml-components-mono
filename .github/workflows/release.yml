@@ -33,6 +33,36 @@ jobs:
       - uses: googleapis/release-please-action@v4
         id: release
 
+      - name: display outputs
+        run: |
+          echo "releases_created: ${{ steps.release.outputs.releases_created }}"
+          echo "paths_released: ${{ steps.release.outputs.paths_released }}"
+          echo "tag_name: ${{ steps.release.outputs.tag_name }}"
+          echo "my_eval_release_created: ${{ steps.release.outputs['packages/my_eval--release_created'] }}"
+          echo "my_eval_tag_name: ${{ steps.release.outputs['packages/my_eval--tag_name'] }}"
+          echo "my_train_release_created: ${{ steps.release.outputs['packages/my_train--release_created'] }}"
+          echo "my_train_tag_name: ${{ steps.release.outputs['packages/my_train--tag_name'] }}"
+
+  debug:
+    needs: release-please
+    strategy:
+      matrix:
+        include:
+          - package: my_eval
+            tag_name: ${{ needs.release-please.outputs.my_eval_tag_name }}
+            release_created: ${{ needs.release-please.outputs.my_eval_release_created }}
+          - package: my_train
+            tag_name: ${{ needs.release-please.outputs.my_train_tag_name }}
+            release_created: ${{ needs.release-please.outputs.my_train_release_created }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display outputs
+        run: |
+          echo "Package: ${{ matrix.package }}"
+          echo "Tag Name: ${{ matrix.tag_name }}"
+          echo "Release Created: ${{ matrix.release_created }}"
+          echo "Release Created (String): ${{ matrix.release_created != '' && fromJSON(matrix.release_created) }}"
+
   publish-to-registry:
     needs: release-please
     strategy:
