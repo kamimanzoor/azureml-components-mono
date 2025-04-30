@@ -76,7 +76,7 @@ jobs:
       - name: Publish component to Azure ML Registry
         run: |
           # Read GitHub Actions variable into bash variable
-          cd ${{ env.artifact_name }}
+          cd ${{ env.artifact_name }}/components/${{ inputs.component }}
           ls -la
           description=$(cat components/${{ inputs.component }}/description.md.tmpl)
           # Display description for debugging
