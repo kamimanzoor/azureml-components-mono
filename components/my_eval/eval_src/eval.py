@@ -23,7 +23,6 @@ for line in lines:
 # Evaluate the incoming scoring result and output evaluation result.
 # Here only output a dummy file for demo.
 # Feature 1
-# Feature 2
 # Bugfix 1
 # Feature 10
 # PR test
