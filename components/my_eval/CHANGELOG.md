@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.0](https://github.com/kamimanzoor/azureml-components-mono/compare/my_eval-v0.14.0...my_eval-v0.15.0) (2025-09-03)
+
+
+### Features
+
+* remove commented-out feature ([94e66ca](https://github.com/kamimanzoor/azureml-components-mono/commit/94e66ca33b7a1bc68e0ccd5698a30179558446eb))
+
 ## [0.14.0](https://github.com/kamimanzoor/azureml-components-mono/compare/my_eval-v0.13.0...my_eval-v0.14.0) (2025-04-30)
 
 
