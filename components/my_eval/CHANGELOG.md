@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.1](https://github.com/kamimanzoor/azureml-components-mono/compare/my_eval-v0.15.0...my_eval-v0.15.1) (2025-09-04)
+
+
+### Bug Fixes
+
+* update comment for clarity in eval.py ([#19](https://github.com/kamimanzoor/azureml-components-mono/issues/19)) ([e72d3b7](https://github.com/kamimanzoor/azureml-components-mono/commit/e72d3b7eeca338453a118ee2ca82b92fdf5d6d2a))
+
 ## [0.15.0](https://github.com/kamimanzoor/azureml-components-mono/compare/my_eval-v0.14.0...my_eval-v0.15.0) (2025-09-03)
 
 
